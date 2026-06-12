@@ -37,10 +37,18 @@ resource "aws_iam_role" "mode_role"{
       })
 }
 
-resource "aws_iam_role_policr_attachment" "node_policy" {
-    role=aws_iam_role.node_role.name
-    policy_arn = ["arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy", "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy", "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
-  
+locals {
+  node_policies= [
+    "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy",
+    "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy",
+    "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  ]
+}
+
+resource "aws_iam_role_policy_attachment" "worker_policy" {
+    for_each = toset(local.node_policies)
+    role     = aws_iam_role.mode_role.name
+    policy_arn = each.value
 }
 
 

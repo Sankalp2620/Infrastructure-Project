@@ -45,3 +45,15 @@ variable "instance_types" {
     description = "List of EC2 instance types for the node group"
     type        = list(string)
 }
+
+variable "cluster_role_arn" {
+    description = "ARN of the IAM role for the EKS cluster"
+    type        = string  
+}
+
+variable "node_group_role_arn" {
+    description = "ARN of the IAM role for the EKS node group"
+    type        = string
+}
+
+
