@@ -13,7 +13,10 @@ resource "aws_eks_cluster" "maincluster" {
         security_group_ids     = [aws_security_group.cluster.id]
     }
     enabled_cluster_log_types = ["api", "audit", "authenticator", "controllerManager", "scheduler"]
-    tags = var.tags
+    tags                = {
+    Environment = var.environment
+    Project     = var.cluster_name
+  }
 }
 
 resource "aws_security_group" "cluster" {
@@ -55,7 +58,3 @@ resource "aws_eks_node_group" "main_node" {
     instance_types = var.instance_types
 }
 
-variable "environment" {
-  description = "Environment name"
-  type        = string
-}
