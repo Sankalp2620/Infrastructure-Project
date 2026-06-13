@@ -20,7 +20,7 @@ resource "aws_iam_role_policy_attachment" "eks_policy" {
     policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
 
-resource "aws_iam_role" "mode_role"{
+resource "aws_iam_role" "node_role"{
     name="${var.cluster_name}-eks-node-group-role"
     
     assume_role_policy = jsonencode({
@@ -47,7 +47,7 @@ locals {
 
 resource "aws_iam_role_policy_attachment" "worker_policy" {
     for_each = toset(local.node_policies)
-    role     = aws_iam_role.mode_role.name
+    role     = aws_iam_role.node_role.name
     policy_arn = each.value
 }
 
