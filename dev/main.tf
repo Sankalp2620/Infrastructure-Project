@@ -1,3 +1,22 @@
+resource "aws_s3_bucket" "terraform_state" {
+  bucket = "Add-bucket-name"
+
+  lifecycle {
+    prevent_destroy = false
+  }
+}
+
+
+terraform {  
+  backend "s3" {  
+    bucket       = var.s3_bucket_name  
+    key          = "terraform.tfstate"
+    region       = var.region  
+    encrypt      = true  
+    use_lockfile = true  #S3 native locking
+  }  
+}
+
 module "vpc" {
   source = "./Modules/VPC"
   tags   = {

@@ -1,3 +1,4 @@
+# aws_iam_role for EKS cluster
 resource "aws_iam_role" "eks_cluster_role" {
   name = "${var.cluster_name}-eks-cluster-role"
   
@@ -15,12 +16,16 @@ resource "aws_iam_role" "eks_cluster_role" {
   })
 }
 
+
+# Eks cluster policy
 resource "aws_iam_role_policy_attachment" "eks_policy" {
     role=aws_iam_role.eks_cluster_role.name
     policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
 }
 
-resource "aws_iam_role" "mode_role"{
+
+# IAM Role for Worker Nodes
+resource "aws_iam_role" "eks_node_role"{
     name="${var.cluster_name}-eks-node-group-role"
     
     assume_role_policy = jsonencode({
@@ -45,10 +50,9 @@ locals {
   ]
 }
 
+# Attaching policies to the worker node role
 resource "aws_iam_role_policy_attachment" "worker_policy" {
     for_each = toset(local.node_policies)
-    role     = aws_iam_role.mode_role.name
+    role     = aws_iam_role.eks_node_role.name
     policy_arn = each.value
 }
-
-
