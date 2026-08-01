@@ -37,6 +37,14 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Select Terraform action
+        run: |
+          echo "Selected action: $TF_ACTION"
+          if [ "$TF_ACTION" != "apply" ] && [ "$TF_ACTION" != "destroy" ]; then
+            echo "Invalid action selected: $TF_ACTION"
+            exit 1
+          fi
+
       - name: AWS Login
         uses: aws-actions/configure-aws-credentials@v4
         with:
