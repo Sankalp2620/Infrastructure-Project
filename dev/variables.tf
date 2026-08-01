@@ -1,48 +1,43 @@
 variable "cluster_name" {
   description = "EKS cluster name"
   type        = string
+  default     = "my-eks-cluster"
 }
-variable "tags" {
-  description = "A map of tags to assign to the resource."
-  type        = map(string)
-  value       = {
-    "Environment" = "dev"
-    "Project"     = "EKS-Cluster-VPC"
-    "name"        = "EKS-Cluster-VPC"
-  }
-}
+
 variable "region" {
   description = "AWS region"
   type        = string
-  value       = "ap-south-2"
+  default     = "ap-south-1"
 }
 
 variable "instance_types" {
   description = "List of EC2 instance types for EKS worker nodes"
   type        = list(string)
-  value       = ["t3.medium"]
+  default     = ["t3.medium"]
 }
 
 variable "cidr_block" {
   description = "CIDR block for the VPC"
   type        = string
-  value       = "10.0.0.0/16"
+  default     = "10.0.0.0/16"
 }
+
 variable "public_subnet_cidrs" {
   description = "List of CIDR blocks for public subnets"
   type        = list(string)
-  value       = ["10.0.1.0/24"]
+  default     = ["10.0.101.0/24", "10.0.102.0/24"]
 }
+
 variable "private_subnet_cidrs" {
   description = "List of CIDR blocks for private subnets"
   type        = list(string)
-  value       = ["10.0.2.0/24"]
-
+  default     = ["10.0.1.0/24", "10.0.2.0/24"]
 }
 
 variable "environment" {
   description = "Deployment environment (e.g., dev, staging, prod)"
   type        = string
+  default     = "dev"
 }
 
 # These variables are no longer needed here if the IAM module creates them and outputs their ARNs.

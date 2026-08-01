@@ -1,9 +1,8 @@
 ﻿# Phase 1: build VPC only
-/dev/
 /Modules/EKS/
 /Modules/IAM/
 /Modules/Network/
 
-# Keep only the VPC module visible for the first build
-!Modules/VPC/
-!Modules/VPC/**
+# Keep the VPC module visible for the first build
+!/Modules/VPC/
+!/Modules/VPC/**
