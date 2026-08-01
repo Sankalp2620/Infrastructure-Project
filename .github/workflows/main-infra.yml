@@ -12,7 +12,18 @@ jobs:
   my_job:
     name: deploy to staging
     runs-on: ubuntu-latest
+
+    defaults:
+      run:
+        working-directory: ./dev
+
+
+
+
     steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
     - name: AWS Login
       uses: aws-actions/configure-aws-credentials@v4
       with:
