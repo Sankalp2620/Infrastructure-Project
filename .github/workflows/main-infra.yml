@@ -13,14 +13,6 @@ on:
           - apply
           - destroy
 
-  push:
-    branches-ignore:
-      - main
-
-  pull_request:
-    branches:
-      - main
-
 jobs:
   my_job:
     name: deploy to staging
@@ -31,7 +23,7 @@ jobs:
         working-directory: ./dev
 
     env:
-      TF_ACTION: ${{ github.event_name == 'workflow_dispatch' && github.event.inputs.action || 'apply' }}
+      TF_ACTION: ${{ github.event.inputs.action }}
 
     steps:
       - name: Checkout Repository
