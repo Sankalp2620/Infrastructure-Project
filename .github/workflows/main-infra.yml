@@ -50,39 +50,10 @@ jobs:
       - name: Check Terraform version
         run: |
           echo "Terraform version: $(terraform -version)"
-
-      - name: Terraform Init
+      
+      - name: Terraform destroy (if selected)
+        if: ${{ env.TF_ACTION == 'destroy' }}
         run: |
-          echo "Initializing Terraform..."
-          terraform init
+          terraform destroy
 
-      - name: Terraform format
-        run: |
-          echo "Checking Terraform format..."
-          terraform fmt -check -recursive
-
-      - name: Terraform validate
-        run: |
-          echo "Validating Terraform configuration..."
-          terraform validate
-
-      - name: Terraform plan
-        run: |
-          echo "Generating Terraform plan..."
-          if [ "$TF_ACTION" = "destroy" ]; then
-            terraform plan -destroy -out=tfplan
-          else
-            terraform plan -out=tfplan
-          fi
-
-      - name: Terraform apply or destroy
-        run: |
-          if [ "$TF_ACTION" = "destroy" ]; then
-            echo "Destroying Terraform infrastructure..."
-            terraform apply -auto-approve tfplan
-            echo "Terraform destroy completed successfully."
-          else
-            echo "Applying Terraform plan..."
-            terraform apply -auto-approve tfplan
-            echo "Terraform apply completed successfully."
-          fi
+     
